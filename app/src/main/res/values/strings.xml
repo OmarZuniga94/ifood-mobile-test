@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">twitter_exam</string>
+    <!-- Twitter KEY & SECRET -->
+    <string name="CONSUMER_KEY">m2LPPSLRnXYIed5ktijueYjFk</string>
+    <string name="CONSUMER_SECRET">u0w4VcQd82yNBIpkH3Z3hCMziYpkSgqn3kBqfmkKN02Q2S2ugv</string>
+
+    <!-- General -->
+    <string name="success_login_twitter">Successful Sign In</string>
+    <string name="hint_search_user">Enter the username</string>
+
+    <!-- Users Row List -->
+    <string name="row_followers">Followers: </string>
+    <string name="row_friends">Friends: </string>
+
+    <!-- Preferences -->
+    <string name="prf_already_logged">prf_already_logged</string>
+</resources>
