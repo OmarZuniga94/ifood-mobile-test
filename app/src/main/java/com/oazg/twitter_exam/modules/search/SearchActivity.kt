@@ -9,6 +9,8 @@ import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +26,11 @@ import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.Result
 import kotlinx.android.synthetic.main.activity_search.*
 
-class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatcher, SearchContracts.UsersItemClick {
+class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatcher, SearchContracts.UsersItemClick,
+    AdapterView.OnItemClickListener {
 
     private lateinit var binding: ActivitySearchBinding
+    private lateinit var adapter: ArrayAdapter<String>
     private val iterator = SearchIteractor(this)
     private val router = SearchRouter(this)
 
@@ -34,8 +38,10 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
         binding.edtSearchUser.addTextChangedListener(this)
+        binding.edtSearchUser.onItemClickListener = this
         binding.rcvUserList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.rcvUserList.addItemDecoration(object : DividerItemDecoration(binding.rcvUserList.context, DividerItemDecoration.VERTICAL) {})
+        binding.rcvUserList.addItemDecoration(object :
+            DividerItemDecoration(binding.rcvUserList.context, DividerItemDecoration.VERTICAL) {})
         initTwitterButton()
     }
 
@@ -43,7 +49,11 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
         if (!App.getPreferences().loadDataBoolean(R.string.prf_already_logged, false)) {
             binding.loginButton.callback = object : Callback<TwitterSession>() {
                 override fun success(result: Result<TwitterSession>) {
-                    SnackbarHelper.showSuccessSnackbar(binding.root, getString(R.string.success_login_twitter), Snackbar.LENGTH_LONG)
+                    SnackbarHelper.showSuccessSnackbar(
+                        binding.root,
+                        getString(R.string.success_login_twitter),
+                        Snackbar.LENGTH_LONG
+                    )
                     App.getPreferences().saveDataBool(R.string.prf_already_logged, true)
                     binding.loginButton.visibility = GONE
                     binding.edtSearchUser.visibility = VISIBLE
@@ -71,8 +81,14 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
         iterator.searchUser(edt_search_user.text.toString(), this)
     }
 
-    override fun onUsersFound(adapter: UsersAdapter) {
-        binding.rcvUserList.adapter = adapter
+    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Log.e(this.javaClass.simpleName, iterator.usersList[position].id.toString())
+    }
+
+    override fun onUsersFound(users: Array<String?>) {
+        adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, users)
+        binding.edtSearchUser.setAdapter(adapter)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onUserNotFound() {

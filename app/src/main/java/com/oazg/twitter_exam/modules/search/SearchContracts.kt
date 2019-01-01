@@ -5,7 +5,7 @@ import android.view.View
 class SearchContracts {
     interface Presenter {
         fun initTwitterButton()
-        fun onUsersFound(adapter: UsersAdapter)
+        fun onUsersFound(adapter: Array<String?>)
         fun onUserNotFound()
     }
 

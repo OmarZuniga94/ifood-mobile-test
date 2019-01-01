@@ -1,9 +1,10 @@
 package com.oazg.twitter_exam.modules.search
 
-import com.oazg.twitter_exam.App
-import com.oazg.twitter_exam.R
 import com.oazg.twitter_exam.utils.CustomTwitterClient
-import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.Callback
+import com.twitter.sdk.android.core.Result
+import com.twitter.sdk.android.core.TwitterCore
+import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.models.User
 
 
@@ -17,15 +18,26 @@ class SearchIteractor(val presenter: SearchContracts.Presenter) : SearchContract
             .enqueue(object : Callback<ArrayList<User>>() {
                 override fun success(result: Result<ArrayList<User>>?) {
                     usersList = result!!.data.toMutableList()
-                    if (usersList.size > 0)
-                        presenter.onUsersFound(UsersAdapter(usersList, App.getContext(), listener))
-                    else
+                    if (usersList.size > 0) {
+                        presenter.onUsersFound(getUsersArray())
+                    } else {
                         presenter.onUserNotFound()
+                    }
                 }
 
                 override fun failure(exception: TwitterException) {
                     presenter.onUserNotFound()
                 }
             })
+    }
+
+    private fun getUsersArray(): Array<String?> {
+        val users = arrayOfNulls<String>(usersList.size)
+        var i = 0
+        while (i <= users.size - 1) {
+            users[i] = usersList[i].screenName
+            i++
+        }
+        return users
     }
 }
