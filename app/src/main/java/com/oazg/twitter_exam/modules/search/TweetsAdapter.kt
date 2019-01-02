@@ -9,10 +9,11 @@ import com.oazg.twitter_exam.App
 import com.oazg.twitter_exam.R
 import com.oazg.twitter_exam.databinding.RowUsersBinding
 import com.squareup.picasso.Picasso
+import com.twitter.sdk.android.core.models.Tweet
 import com.twitter.sdk.android.core.models.User
 
-class UsersAdapter(val items: MutableList<User>, val context: Context, val listener: SearchContracts.UsersItemClick) :
-    RecyclerView.Adapter<ViewHolder>() {
+class TweetsAdapter(val items: MutableList<Tweet>, val context: Context, val listener: SearchContracts.UsersItemClick) :
+        RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var binding = RowUsersBinding.inflate(LayoutInflater.from(context))
@@ -30,13 +31,15 @@ class UsersAdapter(val items: MutableList<User>, val context: Context, val liste
 }
 
 class ViewHolder(val binding: RowUsersBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: User) {
+    fun bind(item: Tweet) {
         with(binding) {
-            txtUserName.text = "@".plus(item.screenName)
-            txtUserFollowers.text = App.getContext().getString(R.string.row_followers).plus(item.followersCount)
-            txtUserFriends.text = App.getContext().getString(R.string.row_friends).plus(item.friendsCount)
-            Picasso.with(App.getContext()).load(item.profileImageUrl).resize(100, 100)
-                .into(imgUserPhoto)
+            txtUserName.text = item.user.name
+            val date = item.createdAt.split(" ")
+            txtUserScreenName.text = "@".plus(item.user.screenName)
+            txtTweetDate.text = "Date: ".plus(date[2] + " " + date[1] + " " + date[5])
+            txtUserTweet.text = item.text
+            Picasso.with(App.getContext()).load(item.user.profileImageUrl).resize(40, 40)
+                    .into(imgUserPhoto)
         }
     }
 }

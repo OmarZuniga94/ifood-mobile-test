@@ -78,11 +78,12 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        iterator.searchUser(edt_search_user.text.toString(), this)
+        iterator.searchUser(edt_search_user.text.toString())
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         Log.e(this.javaClass.simpleName, iterator.usersList[position].id.toString())
+        iterator.displayTweets(iterator.usersList[position].id, this)
     }
 
     override fun onUsersFound(users: Array<String?>) {
@@ -93,6 +94,14 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
 
     override fun onUserNotFound() {
         Log.e(this.javaClass.simpleName, "Usuario NO encontrado")
+    }
+
+    override fun onTweetsFound(adapter: TweetsAdapter) {
+        binding.rcvUserList.adapter = adapter
+    }
+
+    override fun onTweetsNotFound() {
+        Log.e(this.javaClass.simpleName, "Tweets NO encontrados")
     }
 
     override fun onListItemClick(v: View, position: Int) {

@@ -5,12 +5,15 @@ import android.view.View
 class SearchContracts {
     interface Presenter {
         fun initTwitterButton()
-        fun onUsersFound(adapter: Array<String?>)
+        fun onUsersFound(users: Array<String?>)
         fun onUserNotFound()
+        fun onTweetsFound(adapter: TweetsAdapter)
+        fun onTweetsNotFound()
     }
 
     interface Iteractor {
-        fun searchUser(input: String, listener: UsersItemClick)
+        fun searchUser(input: String)
+        fun displayTweets(userId: Long, listener: UsersItemClick)
     }
 
     interface Router {
