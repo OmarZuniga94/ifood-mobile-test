@@ -6,9 +6,8 @@ class SearchContracts {
     interface Presenter {
         fun initTwitterButton()
         fun onUsersFound(users: Array<String?>)
-        fun onUserNotFound()
         fun onTweetsFound(adapter: TweetsAdapter)
-        fun onTweetsNotFound()
+        fun onSearchFailed(msg: String)
     }
 
     interface Iteractor {

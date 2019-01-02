@@ -1,4 +1,4 @@
-package com.oazg.twitter_exam.utils
+package com.oazg.twitter_exam.net
 
 import com.twitter.sdk.android.core.TwitterApiClient
 import com.twitter.sdk.android.core.TwitterSession
@@ -10,11 +10,11 @@ import retrofit2.http.Query
 
 open class CustomTwitterClient(session: TwitterSession) : TwitterApiClient(session) {
 
-    fun getCustomService(): GetUsersShowAPICustomService {
-        return getService(GetUsersShowAPICustomService::class.java)
+    fun getCustomService(): TwitterAPICustomService {
+        return getService(TwitterAPICustomService::class.java)
     }
 
-    interface GetUsersShowAPICustomService {
+    interface TwitterAPICustomService {
         @GET("/1.1/users/search.json")
         fun searchUser(@Query("q") username: String): Call<ArrayList<User>>
 

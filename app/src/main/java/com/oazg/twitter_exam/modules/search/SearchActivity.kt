@@ -13,7 +13,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.oazg.twitter_exam.App
@@ -27,11 +27,11 @@ import com.twitter.sdk.android.core.Result
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatcher, SearchContracts.UsersItemClick,
-    AdapterView.OnItemClickListener {
+        AdapterView.OnItemClickListener {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var adapter: ArrayAdapter<String>
-    private val iterator = SearchIteractor(this)
+    private val iterator = SearchIterator(this)
     private val router = SearchRouter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +39,9 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
         binding.edtSearchUser.addTextChangedListener(this)
         binding.edtSearchUser.onItemClickListener = this
-        binding.rcvUserList.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.rcvUserList.layoutManager = GridLayoutManager(this, 1, RecyclerView.VERTICAL, false)
         binding.rcvUserList.addItemDecoration(object :
-            DividerItemDecoration(binding.rcvUserList.context, DividerItemDecoration.VERTICAL) {})
+                DividerItemDecoration(binding.rcvUserList.context, DividerItemDecoration.VERTICAL) {})
         initTwitterButton()
     }
 
@@ -50,14 +50,14 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
             binding.loginButton.callback = object : Callback<TwitterSession>() {
                 override fun success(result: Result<TwitterSession>) {
                     SnackbarHelper.showSuccessSnackbar(
-                        binding.root,
-                        getString(R.string.success_login_twitter),
-                        Snackbar.LENGTH_LONG
+                            binding.root,
+                            getString(R.string.success_login_twitter),
+                            Snackbar.LENGTH_LONG
                     )
                     App.getPreferences().saveDataBool(R.string.prf_already_logged, true)
                     binding.loginButton.visibility = GONE
                     binding.edtSearchUser.visibility = VISIBLE
-                    binding.rcvUserList.visibility = VISIBLE
+                    binding.rcvUserList.visibility = GONE
                 }
 
                 override fun failure(exception: TwitterException?) {
@@ -67,7 +67,7 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
         } else {
             binding.loginButton.visibility = GONE
             binding.edtSearchUser.visibility = VISIBLE
-            binding.rcvUserList.visibility = VISIBLE
+            binding.rcvUserList.visibility = GONE
         }
     }
 
@@ -83,6 +83,7 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         Log.e(this.javaClass.simpleName, iterator.usersList[position].id.toString())
+        binding.rcvUserList.visibility = VISIBLE
         iterator.displayTweets(iterator.usersList[position].id, this)
     }
 
@@ -90,22 +91,20 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
         adapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, users)
         binding.edtSearchUser.setAdapter(adapter)
         adapter.notifyDataSetChanged()
-    }
-
-    override fun onUserNotFound() {
-        Log.e(this.javaClass.simpleName, "Usuario NO encontrado")
+        binding.rcvUserList.visibility = GONE
     }
 
     override fun onTweetsFound(adapter: TweetsAdapter) {
+        binding.rcvUserList.visibility = VISIBLE
         binding.rcvUserList.adapter = adapter
     }
 
-    override fun onTweetsNotFound() {
-        Log.e(this.javaClass.simpleName, "Tweets NO encontrados")
+    override fun onSearchFailed(msg: String) {
+        SnackbarHelper.showErrorSnackbar(binding.root, msg, Snackbar.LENGTH_SHORT)
     }
 
     override fun onListItemClick(v: View, position: Int) {
-        Log.e(this.javaClass.simpleName, iterator.usersList[position].id.toString())
+        Log.e(this.javaClass.simpleName, iterator.tweetsList[position].text)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
