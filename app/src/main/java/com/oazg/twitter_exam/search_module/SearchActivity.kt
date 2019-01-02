@@ -1,7 +1,6 @@
-package com.oazg.twitter_exam.modules.search
+package com.oazg.twitter_exam.search_module
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,10 +20,10 @@ import com.oazg.twitter_exam.App
 import com.oazg.twitter_exam.R
 import com.oazg.twitter_exam.databinding.ActivitySearchBinding
 import com.oazg.twitter_exam.utils.SnackbarHelper
-import com.twitter.sdk.android.core.TwitterSession
 import com.twitter.sdk.android.core.Callback
-import com.twitter.sdk.android.core.TwitterException
 import com.twitter.sdk.android.core.Result
+import com.twitter.sdk.android.core.TwitterException
+import com.twitter.sdk.android.core.TwitterSession
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatcher, SearchContracts.UsersItemClick,
@@ -32,7 +32,6 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
     private lateinit var binding: ActivitySearchBinding
     private lateinit var adapter: ArrayAdapter<String>
     private val iterator = SearchIterator(this)
-    private val router = SearchRouter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,8 +102,12 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
         SnackbarHelper.showErrorSnackbar(binding.root, msg, Snackbar.LENGTH_SHORT)
     }
 
+    override fun onAnalyzeFailed(msg: String) {
+        SnackbarHelper.showErrorSnackbar(binding.root, msg, Snackbar.LENGTH_SHORT)
+    }
+
     override fun onListItemClick(v: View, position: Int) {
-        Log.e(this.javaClass.simpleName, iterator.tweetsList[position].text)
+        iterator.analyzeTweet(iterator.tweetsList[position].text)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

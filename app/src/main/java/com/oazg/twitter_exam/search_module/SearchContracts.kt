@@ -1,4 +1,4 @@
-package com.oazg.twitter_exam.modules.search
+package com.oazg.twitter_exam.search_module
 
 import android.view.View
 
@@ -8,15 +8,13 @@ class SearchContracts {
         fun onUsersFound(users: Array<String?>)
         fun onTweetsFound(adapter: TweetsAdapter)
         fun onSearchFailed(msg: String)
+        fun onAnalyzeFailed(msg: String)
     }
 
     interface Iteractor {
         fun searchUser(input: String)
         fun displayTweets(userId: Long, listener: UsersItemClick)
-    }
-
-    interface Router {
-        fun presentAnalysis()
+        fun analyzeTweet(tweet: String)
     }
 
     interface UsersItemClick {
