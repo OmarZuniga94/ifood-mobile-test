@@ -1,9 +1,10 @@
 package com.oazg.twitter_exam.search_module
 
-import android.util.Log
 import com.oazg.twitter_exam.App
 import com.oazg.twitter_exam.R
-import com.oazg.twitter_exam.net.*
+import com.oazg.twitter_exam.adapter.TweetsAdapter
+import com.oazg.twitter_exam.network.*
+import com.oazg.twitter_exam.utils.AnalyzeTweet
 import com.twitter.sdk.android.core.Callback
 import com.twitter.sdk.android.core.Result
 import com.twitter.sdk.android.core.TwitterCore
@@ -18,6 +19,7 @@ class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts
 
     lateinit var usersList: MutableList<User>
     lateinit var tweetsList: MutableList<Tweet>
+    private var adapter: TweetsAdapter? = null
 
     override fun searchUser(input: String) {
         val session = TwitterCore.getInstance().sessionManager.activeSession
@@ -40,7 +42,8 @@ class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts
                                     null, null, null
                             )
                             val list = mutableListOf(item)
-                            presenter.onTweetsFound(TweetsAdapter(list, App.getContext(), null))
+                            adapter = TweetsAdapter(list, App.getContext(), null)
+                            presenter.onTweetsFound(adapter!!)
                         }
                     }
 
@@ -58,7 +61,8 @@ class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts
                     override fun success(result: Result<ArrayList<Tweet>>?) {
                         tweetsList = result!!.data.toMutableList()
                         if (tweetsList.size > 0) {
-                            presenter.onTweetsFound(TweetsAdapter(tweetsList, App.getContext(), listener))
+                            adapter = TweetsAdapter(tweetsList, App.getContext(), listener)
+                            presenter.onTweetsFound(adapter!!)
                         } else {
                             /* If the search doesn't show any user then set custom text in Recycler View */
                             val item = Tweet(
@@ -72,7 +76,8 @@ class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts
                                     null, null, null
                             )
                             val list = mutableListOf(item)
-                            presenter.onTweetsFound(TweetsAdapter(list, App.getContext(), null))
+                            adapter = TweetsAdapter(list, App.getContext(), null)
+                            presenter.onTweetsFound(adapter!!)
                         }
                     }
 
@@ -83,14 +88,16 @@ class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts
                 })
     }
 
-    override fun analyzeTweet(tweet: String) {
-        val request = AnalyzerRequest(Document(tweet, type = "PLAIN_TEXT"))
+    override fun analyzeTweet(tweet: Tweet) {
+        val request = AnalyzerRequest(Document(tweet.text, type = "PLAIN_TEXT"))
         object : NaturalLanguageClient() {}.getCustomService()
                 .analyzeText(App.getContext().getString(R.string.google_api_key), request).enqueue(
                         object : Callback<AnalyzerResult>() {
                             override fun success(result: Result<AnalyzerResult>?) {
-                                Log.e(this.javaClass.simpleName, "Score: " + result!!.data.documentSentiment.score
-                                        + " Magnitude: " + result!!.data.documentSentiment.magnitude)
+                                val date = tweet.createdAt.split(" ")
+                                val analyzeTweet = AnalyzeTweet(tweet.text, tweet.user.profileImageUrl, result!!.data.documentSentiment.score,
+                                        result!!.data.documentSentiment.magnitude, tweet.user.name, tweet.user.screenName, date[2] + " " + date[1] + " " + date[5])
+                                presenter.onTweetAnalyze(analyzeTweet)
                             }
 
                             override fun failure(exception: TwitterException) {

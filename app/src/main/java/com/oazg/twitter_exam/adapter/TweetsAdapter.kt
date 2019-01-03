@@ -1,4 +1,4 @@
-package com.oazg.twitter_exam.search_module
+package com.oazg.twitter_exam.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.oazg.twitter_exam.App
 import com.oazg.twitter_exam.databinding.RowUsersBinding
+import com.oazg.twitter_exam.search_module.SearchContracts
+import com.oazg.twitter_exam.search_module.TWEETS_NOT_FOUND
+import com.oazg.twitter_exam.search_module.USER_NOT_FOUND
 import com.squareup.picasso.Picasso
 import com.twitter.sdk.android.core.models.Tweet
 

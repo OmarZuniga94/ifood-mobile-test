@@ -4,7 +4,12 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlue">#00b1ed</color>
+    <color name="colorYellow">#fff422</color>
+    <color name="colorGray">#848484</color>
     <!-- Transparent colors -->
-    <color name="colorRedTransparent">#D0021B</color>
-    <color name="colorGreenTransparent">#22AF48</color>
+    <color name="colorRedTransparent">#AAD0021B</color>
+    <color name="colorGreenTransparent">#AA22AF48</color>
+    <color name="colorWhiteTransparent">#AAFFFFFF</color>
 </resources>

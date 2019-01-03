@@ -1,4 +1,4 @@
-package com.oazg.twitter_exam.net
+package com.oazg.twitter_exam.network
 
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
@@ -24,13 +24,11 @@ open class NaturalLanguageClient {
 
 /* WEB SERVICE REQUEST */
 class AnalyzerRequest(@SerializedName("document") val document: Document,
-                      @SerializedName("encodingType") val encodingType: String = "UTF8"
-)
+                      @SerializedName("encodingType") val encodingType: String = "UTF8")
 
 /* Document object inside the analyze request */
 class Document(@SerializedName("content") val content: String,
-               @SerializedName("type") val type: String = "PLAIN-TEXT"
-)
+               @SerializedName("type") val type: String = "PLAIN-TEXT")
 
 /* WEB SERVICE RESULT */
 class AnalyzerResult(@SerializedName("documentSentiment") val documentSentiment: DocumentSentiment)

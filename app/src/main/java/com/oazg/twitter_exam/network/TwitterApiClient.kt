@@ -1,4 +1,4 @@
-package com.oazg.twitter_exam.net
+package com.oazg.twitter_exam.network
 
 import com.twitter.sdk.android.core.TwitterApiClient
 import com.twitter.sdk.android.core.TwitterSession
