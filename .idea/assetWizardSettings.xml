@@ -14,8 +14,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_close_dialog" />
-                            <entry key="sourceFile" value="C:\Users\omara\Downloads\baseline-close-24px.svg" />
+                            <entry key="outputName" value="ic_back_arrow" />
+                            <entry key="sourceFile" value="C:\Users\omara\Downloads\baseline-keyboard_arrow_left-24px.svg" />
                           </map>
                         </option>
                       </PersistentState>

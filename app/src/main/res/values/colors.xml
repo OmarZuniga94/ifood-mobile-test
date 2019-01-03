@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#1dcaff</color>
+    <color name="colorPrimaryDark">#00aced</color>
+    <color name="colorAccent">#0084b4</color>
+    <color name="colorSecondary">#c0deed</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlue">#00b1ed</color>
@@ -11,5 +12,5 @@
     <!-- Transparent colors -->
     <color name="colorRedTransparent">#AAD0021B</color>
     <color name="colorGreenTransparent">#AA22AF48</color>
-    <color name="colorWhiteTransparent">#AAFFFFFF</color>
+    <color name="colorWhiteTransparent">#deffffff</color>
 </resources>

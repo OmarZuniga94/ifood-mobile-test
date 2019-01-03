@@ -1,4 +1,4 @@
-package com.oazg.twitter_exam.search_module
+package com.oazg.twitter_exam.modules.search
 
 import com.oazg.twitter_exam.App
 import com.oazg.twitter_exam.R
@@ -17,8 +17,8 @@ const val TWEETS_NOT_FOUND: Long = -2
 
 class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts.Iteractor {
 
-    lateinit var usersList: MutableList<User>
-    lateinit var tweetsList: MutableList<Tweet>
+    var usersList: MutableList<User>? = null
+    var tweetsList: MutableList<Tweet>? = null
     private var adapter: TweetsAdapter? = null
 
     override fun searchUser(input: String) {
@@ -27,7 +27,7 @@ class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts
                 .enqueue(object : Callback<ArrayList<User>>() {
                     override fun success(result: Result<ArrayList<User>>?) {
                         usersList = result!!.data.toMutableList()
-                        if (usersList.size > 0) {
+                        if (usersList!!.size > 0) {
                             presenter.onUsersFound(getUsersArray())
                         } else {
                             /* If the search doesn't show any user then set custom text in Recycler View */
@@ -60,8 +60,8 @@ class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts
                 .enqueue(object : Callback<ArrayList<Tweet>>() {
                     override fun success(result: Result<ArrayList<Tweet>>?) {
                         tweetsList = result!!.data.toMutableList()
-                        if (tweetsList.size > 0) {
-                            adapter = TweetsAdapter(tweetsList, App.getContext(), listener)
+                        if (tweetsList!!.size > 0) {
+                            adapter = TweetsAdapter(tweetsList!!, App.getContext(), listener)
                             presenter.onTweetsFound(adapter!!)
                         } else {
                             /* If the search doesn't show any user then set custom text in Recycler View */
@@ -108,10 +108,10 @@ class SearchIterator(val presenter: SearchContracts.Presenter) : SearchContracts
     }
 
     private fun getUsersArray(): Array<String?> {
-        val users = arrayOfNulls<String>(usersList.size)
+        val users = arrayOfNulls<String>(usersList!!.size)
         var i = 0
         while (i <= users.size - 1) {
-            users[i] = usersList[i].screenName
+            users[i] = usersList!![i].screenName
             i++
         }
         return users

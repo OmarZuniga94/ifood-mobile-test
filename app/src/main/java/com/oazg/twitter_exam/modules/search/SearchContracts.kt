@@ -1,4 +1,4 @@
-package com.oazg.twitter_exam.search_module
+package com.oazg.twitter_exam.modules.search
 
 import android.view.View
 import androidx.fragment.app.FragmentManager
@@ -8,7 +8,6 @@ import com.twitter.sdk.android.core.models.Tweet
 
 class SearchContracts {
     interface Presenter {
-        fun initTwitterButton()
         fun onUsersFound(users: Array<String?>)
         fun onTweetsFound(adapter: TweetsAdapter)
         fun onTweetAnalyze(tweet: AnalyzeTweet)
@@ -23,7 +22,7 @@ class SearchContracts {
     }
 
     interface Router {
-        fun displayAnalyzeDialog(tweet: AnalyzeTweet, fm: FragmentManager)
+        fun displayAnalyzeDialog(tweet: AnalyzeTweet, viewTransition: View)
     }
 
     interface UsersItemClick {

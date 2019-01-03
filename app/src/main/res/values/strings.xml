@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">twitter_exam</string>
+    <string name="app_name">Tweet\nFeelings</string>
     <!-- Twitter KEY & SECRET -->
     <string name="CONSUMER_KEY">m2LPPSLRnXYIed5ktijueYjFk</string>
     <string name="CONSUMER_SECRET">u0w4VcQd82yNBIpkH3Z3hCMziYpkSgqn3kBqfmkKN02Q2S2ugv</string>
@@ -8,6 +8,7 @@
     <string name="google_api_key">AIzaSyAumlraVnA_NEsR3U3fPtjAMVQigxOTFI0</string>
 
     <!-- General -->
+    <string name="please_sign_in">Please Sign In:</string>
     <string name="success_login_twitter">Successful Sign In</string>
     <string name="hint_search_user">Enter the username</string>
 
@@ -17,7 +18,4 @@
 
     <!-- Preferences -->
     <string name="prf_already_logged">prf_already_logged</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
