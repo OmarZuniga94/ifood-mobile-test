@@ -35,6 +35,7 @@ class SearchActivity : AppCompatActivity(), SearchContracts.Presenter, TextWatch
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
+        binding.edtSearchUser.addTextChangedListener(this)
         binding.edtSearchUser.setOnEditorActionListener(this)
         binding.edtSearchUser.onItemClickListener = this
         binding.rcvUserList.layoutManager = GridLayoutManager(this, 1, RecyclerView.VERTICAL, false)
