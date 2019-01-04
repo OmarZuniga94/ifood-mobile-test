@@ -9,10 +9,12 @@ Create an app that given an Twitter username it will list user's tweets. When I 
 
 ## Technical Description
 * Modeling Architecture:  VIPER
-* Android Architecture:  DataBinding / AndroidX / Kotlin
+* Android Components:  DataBinding / AndroidX / Kotlin / Material Design
 * External API's:
     - Stetho:  Facebook API that uses Chrome Developer Tools to debug application.
     - Retrofit v2:  Networking API for Web Services.
     - Twitter Client:  Twitter API for connection to Twitter Core.
     - Google Natural Language:   Google API set up in GCP console.
 
+## To Do
+* Unit tests
